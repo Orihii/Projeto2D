@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from menu import Menu
+from code.Menu import Menu
 
 class Game:
     def __init__(self):
@@ -13,6 +13,7 @@ class Game:
         while True:
             menu = Menu(self.window)
             menu.run()
+            pass
  
  
  
