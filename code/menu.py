@@ -13,20 +13,20 @@ class Menu:
         self.small_font = pygame.font.Font(None, 36) 
 
         # Opções do menu
-        self.options = ["START", "QUIT"]
-        self.selected = 0  # 0 = START, 1 = QUIT
+        self.options = ["START", "QUIT", "WIP"]
+        self.selected = 0  # 0 = START, 1 = QUIT, 2 = WIP
 
 
     def run(self, ):
         
         running = True
         while running:
-            #print("Menu is running")
+           # print("Menu is running")
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-                    #print("Quitting")
+                    # print("Quitting")
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                          running = False
@@ -35,12 +35,26 @@ class Menu:
                         quit()   
 
                 if event.type == pygame.KEYDOWN:
-                    # Navegação com setas
+                    # Navegação com setas e wasd
                     if event.key == pygame.K_UP or event.key == pygame.K_w:
                         self.selected = (self.selected - 1) % len(self.options)
                     if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                         self.selected = (self.selected + 1) % len(self.options)
 
+                    if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
+                        if self.selected == 0:  # START
+                            print("Starting game...")  # Para teste
+                            return "start"                           
+                        
+                        elif self.selected == 1:  # QUIT
+                            pygame.quit()
+                            print("Quitting game...")  # Para teste
+                            quit()
+                            
+                        elif self.selected == 2:  # WIP                           
+                            print("WIP option selected")  # Para teste
+                            return "wip"
+                            
             self.window.blit(self.surt, self.rect)
 
         # Texto do menu
@@ -62,7 +76,7 @@ class Menu:
                 
                 self.window.blit(text, (x, y))
                 
-                # Se estiver selecionado, desenha um indicador ">" antes
+                # indicador ">" na opcão selecionada
                 if i == self.selected:
                     indicator = self.small_font.render(">", True, ORANGE)
                     self.window.blit(indicator, (x - 40, y))
