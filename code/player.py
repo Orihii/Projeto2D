@@ -3,7 +3,7 @@
 
 import pygame
 from code.entity import Entity
-from code.const import WIN_WIDTH, WIN_HEIGHT
+from code.Const import WIN_WIDTH, WIN_HEIGHT
 
 class Player(Entity):
     def __init__(self, x, y):

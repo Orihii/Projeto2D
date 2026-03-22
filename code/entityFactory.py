@@ -11,7 +11,7 @@
 from code.player import Player
 from code.enemy import Enemy
 from code.background import Background
-from code.const import WIN_WIDTH, WIN_HEIGHT
+from code.Const import WIN_WIDTH, WIN_HEIGHT
 
 class EntityFactory:
     @staticmethod

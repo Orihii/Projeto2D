@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from code.const import WIN_WIDTH, WIN_HEIGHT, BLACK
+from code.Const import WIN_WIDTH, WIN_HEIGHT, BLACK
 from code.entityFactory import EntityFactory
 
 class Level:
