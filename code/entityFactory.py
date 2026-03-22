@@ -1,17 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-class EntityFactory:
-    def __init__(self):
-        pass
+# class EntityFactory:
+#     def __init__(self):
+#         pass
 
     #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from code.Player import Player
-from code.Enemy import Enemy
-from code.Background import Background
-from code.Const import WIN_WIDTH, WIN_HEIGHT
+from code.player import Player
+from code.enemy import Enemy
+from code.background import Background
+from code.const import WIN_WIDTH, WIN_HEIGHT
 
 class EntityFactory:
     @staticmethod

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from code.Entity import Entity  
+from code.entity import Entity  
 
 
 class Background(Entity):

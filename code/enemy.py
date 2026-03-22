@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from code.Entity import Entity  
+import pygame
+from code.entity import Entity
+
 
 
 class Enemy(Entity):

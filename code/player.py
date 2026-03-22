@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from code.Entity import Entity
-from code.Const import WIN_WIDTH, WIN_HEIGHT
+from code.entity import Entity
+from code.const import WIN_WIDTH, WIN_HEIGHT
 
 class Player(Entity):
     def __init__(self, x, y):
@@ -11,12 +11,16 @@ class Player(Entity):
         self.name = "player"
         
         # Cria um retângulo
-        self.rect = pygame.Rect(x, y, 30, 30)
+        # self.rect = pygame.Rect(x, y, 30, 30)
+        self.surf = pygame.image.load("assets/images/ff.png").convert_alpha()
+        self.surf = pygame.transform.scale(self.surf, (50, 50))
+        self.rect = self.surf.get_rect(center=(x + 15, y + 15))
         self.speed = 6
+
         
         
-        self.surf = pygame.Surface((30, 30))
-        self.surf.fill((255, 255, 255)) 
+        # self.surf = pygame.Surface((30, 30))
+        # self.surf.fill((255, 255, 255)) 
 
     def move(self):
         # Teclas de movimento

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from code.Const import WIN_WIDTH, WIN_HEIGHT, BLACK
-from code.EntityFactory import EntityFactory
+from code.const import WIN_WIDTH, WIN_HEIGHT, BLACK
+from code.entityFactory import EntityFactory
 
 class Level:
     def __init__(self, window):

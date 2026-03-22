@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 import pygame.image
-from code.Const import WHITE, WIN_WIDTH, WIN_HEIGHT, ORANGE, BLACK, MAGENTA
+from code.const import WHITE, WIN_WIDTH, WIN_HEIGHT, ORANGE, BLACK, MAGENTA
 
 class Menu:
     def __init__(self, window):
