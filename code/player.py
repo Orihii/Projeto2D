@@ -19,7 +19,7 @@ class Player(Entity):
         self.surf.fill((255, 255, 255)) 
 
     def move(self):
-        """Move o jogador com as setas do teclado"""
+        # Teclas de movimento
         keys = pygame.key.get_pressed()
         
         # Movimento horizontal
@@ -34,7 +34,7 @@ class Player(Entity):
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.rect.y += self.speed
         
-        # Mantém dentro da tela
+        # Limite da tela
         if self.rect.left < 0:
             self.rect.left = 0
         if self.rect.right > WIN_WIDTH:
@@ -45,5 +45,5 @@ class Player(Entity):
             self.rect.bottom = WIN_HEIGHT
     
     def draw(self, window):
-        """Desenha o jogador na tela"""
+        # Desenha o jogador na tela
         window.blit(self.surf, self.rect)
