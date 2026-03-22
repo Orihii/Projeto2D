@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 import pygame.image
-from code.Const import WHITE, WIN_WIDTH, WIN_HEIGHT
+from code.Const import WHITE, WIN_WIDTH, WIN_HEIGHT, ORANGE, BLACK
 
 class Menu:
     def __init__(self, window):
@@ -10,6 +10,11 @@ class Menu:
         self.surt = pygame.image.load("assets/images/gio.png")
         self.rect = self.surt.get_rect(left=0, top=0)
         self.font = pygame.font.Font(None, 36)
+        self.small_font = pygame.font.Font(None, 36) 
+
+        # Opções do menu
+        self.options = ["START", "QUIT"]
+        self.selected = 0  # 0 = START, 1 = QUIT
 
 
     def run(self, ):
@@ -27,15 +32,42 @@ class Menu:
                          running = False
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
-                        quit()               
+                        quit()   
+
+                if event.type == pygame.KEYDOWN:
+                    # Navegação com setas
+                    if event.key == pygame.K_UP or event.key == pygame.K_w:
+                        self.selected = (self.selected - 1) % len(self.options)
+                    if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                        self.selected = (self.selected + 1) % len(self.options)
+
             self.window.blit(self.surt, self.rect)
 
         # Texto do menu
             title = self.font.render("SPACE SHOOTER", True, WHITE)
-            start = self.font.render("Press SPACE to Start", True, WHITE)
             
             self.window.blit(title, (WIN_WIDTH//2 - title.get_width()//2, 100))
-            self.window.blit(start, (WIN_WIDTH//2 - start.get_width()//2, WIN_HEIGHT - 100))
+
+# Desenha as opções do menu
+            for i, option in enumerate(self.options):
+                # Define a cor: laranja se selecionado, branco se não
+                color = ORANGE if i == self.selected else WHITE
+                
+                # Renderiza o texto
+                text = self.small_font.render(option, True, color)
+                
+                # Calcula posição (centralizado, com espaçamento vertical)
+                x = WIN_WIDTH//2 - text.get_width()//2
+                y = WIN_HEIGHT//2 + i * 60 + 50
+                
+                self.window.blit(text, (x, y))
+                
+                # Se estiver selecionado, desenha um indicador ">" antes
+                if i == self.selected:
+                    indicator = self.small_font.render(">", True, ORANGE)
+                    self.window.blit(indicator, (x - 40, y))
+                    indicator2 = self.small_font.render("<", True, ORANGE)
+                    self.window.blit(indicator2, (x + text.get_width() + 20, y))
 
 
             pygame.display.flip()
