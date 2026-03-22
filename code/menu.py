@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import pygame
 import pygame.image
-from code.Const import WHITE, WIN_WIDTH, WIN_HEIGHT, ORANGE, BLACK
+from code.Const import WHITE, WIN_WIDTH, WIN_HEIGHT, ORANGE, BLACK, MAGENTA
 
 class Menu:
     def __init__(self, window):
@@ -25,6 +25,7 @@ class Menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                    print("Quitting game...")  # Para teste
                     quit()
                     # print("Quitting")
                 if event.type == pygame.KEYDOWN:
@@ -32,6 +33,7 @@ class Menu:
                          running = False
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
+                        print("Quitting game...")  # Para teste
                         quit()   
 
                 if event.type == pygame.KEYDOWN:
@@ -58,7 +60,7 @@ class Menu:
             self.window.blit(self.surt, self.rect)
 
         # Texto do menu
-            title = self.font.render("SPACE SHOOTER", True, WHITE)
+            title = self.font.render("HOP ON SHOOTER", True, MAGENTA)
             
             self.window.blit(title, (WIN_WIDTH//2 - title.get_width()//2, 100))
 
