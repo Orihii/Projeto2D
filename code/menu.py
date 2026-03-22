@@ -9,8 +9,8 @@ class Menu:
         self.window = window
         self.surt = pygame.image.load("assets/images/gio.png")
         self.rect = self.surt.get_rect(left=0, top=0)
-        self.font = pygame.font.Font(None, 36)
-        self.small_font = pygame.font.Font(None, 36) 
+        self.font = pygame.font.SysFont("Impact", 40)
+        self.small_font = pygame.font.SysFont("Impact", 32) 
 
         # Opções do menu
         self.options = ["START", "QUIT", "WIP"]
@@ -46,6 +46,8 @@ class Menu:
                     if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                         if self.selected == 0:  # START
                             print("Starting game...")  # Para teste
+                                
+
                             return "start"                           
                         
                         elif self.selected == 1:  # QUIT
@@ -56,7 +58,9 @@ class Menu:
                         elif self.selected == 2:  # WIP                           
                             print("WIP option selected")  # Para teste
                             return "wip"
-                            
+
+        # Desenha o fundo do menu    
+            self.window.fill(BLACK)                
             self.window.blit(self.surt, self.rect)
 
         # Texto do menu
@@ -66,13 +70,13 @@ class Menu:
 
 # Desenha as opções do menu
             for i, option in enumerate(self.options):
-                # Define a cor: laranja se selecionado, branco se não
+                # Define a cor da opcao selecionada
                 color = ORANGE if i == self.selected else WHITE
                 
                 # Renderiza o texto
                 text = self.small_font.render(option, True, color)
                 
-                # Calcula posição (centralizado, com espaçamento vertical)
+                # posição do texto
                 x = WIN_WIDTH//2 - text.get_width()//2
                 y = WIN_HEIGHT//2 + i * 60 + 50
                 

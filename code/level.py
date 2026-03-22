@@ -1,33 +1,22 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-class Level:
-    def __init__(self):
-        self.window = None
-        self.name = None
-        self.entity_list = None
-
-    def run(self, ):
-        pass
-
-#
-#
-#       
-# Level.py (versão temporária para testar o menu)
 import pygame
 from code.Const import WIN_WIDTH, WIN_HEIGHT, BLACK
+from code.EntityFactory import EntityFactory
 
 class Level:
     def __init__(self, window):
         self.window = window
-        self.font = pygame.font.Font(None, 48)
-    
-    def run(self):
-        running = True
-        clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
         
+        # Player
+        self.player = EntityFactory.get_entity("player")
+
+    def run(self):
+        running = True 
         while running:
-            clock.tick(60)
+            self.clock.tick(60)
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -37,7 +26,15 @@ class Level:
                     if event.key == pygame.K_ESCAPE:
                         running = False  # Volta ao menu
             
+            # Move o jogador
+            self.player.move()
+            
+            
             self.window.fill(BLACK)
-            text = self.font.render("GAME - Press ESC to return", True, (255, 255, 255))
-            self.window.blit(text, (WIN_WIDTH//2 - text.get_width()//2, WIN_HEIGHT//2))
+            self.player.draw(self.window)
+            
             pygame.display.flip()
+        
+        return "menu"  # Volta ao menu quando sair do loop
+
+

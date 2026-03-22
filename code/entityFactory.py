@@ -5,5 +5,33 @@ class EntityFactory:
     def __init__(self):
         pass
 
-    def get_entity(self, entity_type):
-        pass
+    #!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from code.Player import Player
+from code.Enemy import Enemy
+from code.Background import Background
+from code.Const import WIN_WIDTH, WIN_HEIGHT
+
+class EntityFactory:
+    @staticmethod
+    def get_entity(entity_type, position=None):
+        
+        if entity_type == "player":
+            # Posição padrão
+            x = WIN_WIDTH // 2 - 15
+            y = WIN_HEIGHT - 60
+            return Player(x, y)
+        
+        elif entity_type == "enemy":
+            if position:
+                x, y = position
+            else:
+                x = WIN_WIDTH // 2 - 15
+                y = 50
+            return Enemy(x, y)
+        
+        elif entity_type == "background":
+            return Background()
+        
+        return None
