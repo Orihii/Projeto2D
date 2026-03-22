@@ -7,7 +7,7 @@ from code.Const import WHITE, WIN_WIDTH, WIN_HEIGHT, ORANGE, BLACK, MAGENTA
 class Menu:
     def __init__(self, window):
         self.window = window
-        self.surt = pygame.image.load("assets/images/gio.png")
+        self.surt = pygame.image.load("assets/images/space_background.png")
         self.rect = self.surt.get_rect(left=0, top=0)
         self.font = pygame.font.SysFont("Impact", 40)
         self.small_font = pygame.font.SysFont("Impact", 32) 
@@ -21,7 +21,7 @@ class Menu:
         
         running = True
         while running:
-           # print("Menu is running")
+           # Eventos do menu
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -45,10 +45,8 @@ class Menu:
 
                     if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN:
                         if self.selected == 0:  # START
-                            print("Starting game...")  # Para teste
-                                
-
-                            return "start"                           
+                            # print("Starting game...")  
+                              return "start"                           
                         
                         elif self.selected == 1:  # QUIT
                             pygame.quit()
@@ -68,7 +66,7 @@ class Menu:
             
             self.window.blit(title, (WIN_WIDTH//2 - title.get_width()//2, 100))
 
-# Desenha as opções do menu
+        # Desenha as opções do menu
             for i, option in enumerate(self.options):
                 # Define a cor da opcao selecionada
                 color = ORANGE if i == self.selected else WHITE

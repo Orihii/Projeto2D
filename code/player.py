@@ -12,7 +12,7 @@ class Player(Entity):
         
         # Cria um retângulo
         self.rect = pygame.Rect(x, y, 30, 30)
-        self.speed = 5
+        self.speed = 6
         
         
         self.surf = pygame.Surface((30, 30))
