@@ -19,7 +19,7 @@ class Player(Entity):
         self.invincible_duration = 60
         
         # Imagem do jogador 
-        self.surf = pygame.image.load("assets/images/ff.png").convert_alpha()
+        self.surf = pygame.image.load("assets/images/starship.png").convert_alpha()
         self.surf = pygame.transform.scale(self.surf, (50, 50))
         self.rect = self.surf.get_rect(center=(x + 15, y + 15))
         self.speed = 6

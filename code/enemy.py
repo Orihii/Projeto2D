@@ -19,9 +19,8 @@ class Enemy(Entity):
         self.invincible_duration = 30
         
         # Imagem do inimigo 
-        self.surf = pygame.image.load("assets/images/ff.png").convert_alpha()
+        self.surf = pygame.image.load("assets/images/ufo.png").convert_alpha()
         self.surf = pygame.transform.scale(self.surf, (50, 50))
-        self.surf = self.add_red_border(self.surf)
         self.rect = self.surf.get_rect(center=(x + 25, y + 25))
         
         # Movimentacao do inimigo 
@@ -35,17 +34,17 @@ class Enemy(Entity):
         self.shoot_delay = random.randint(60, 120)  # Atira a cada 1-2 segundos
         self.bullets = []  
 
-    def add_red_border(self, image): # borda vermelha para destacar inimigos
-        width, height = image.get_size()
-        border_size = 3
-        new_width = width + (border_size * 2)
-        new_height = height + (border_size * 2)
+    # def add_red_border(self, image): # borda vermelha para destacar inimigos
+    #     width, height = image.get_size()
+    #     border_size = 3
+    #     new_width = width + (border_size * 2)
+    #     new_height = height + (border_size * 2)
         
-        bordered_image = pygame.Surface((new_width, new_height), pygame.SRCALPHA)
-        pygame.draw.rect(bordered_image, (255, 0, 0), (0, 0, new_width, new_height))
-        bordered_image.blit(image, (border_size, border_size))
+    #     bordered_image = pygame.Surface((new_width, new_height), pygame.SRCALPHA)
+    #     pygame.draw.rect(bordered_image, (255, 0, 0), (0, 0, new_width, new_height))
+    #     bordered_image.blit(image, (border_size, border_size))
         
-        return bordered_image
+    #     return bordered_image
 
     def move(self):
         self.rect.x += self.speed_x
