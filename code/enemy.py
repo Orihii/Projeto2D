@@ -11,33 +11,31 @@ class Enemy(Entity):
     def __init__(self, x, y):
         super().__init__()
         self.name = "enemy"
-        
-        # ========== VIDA ==========
+         
         self.health = 1
         self.max_health = 1
         self.is_alive = True
         self.invincible_timer = 0
         self.invincible_duration = 30
         
-        # ========== VISUAL ==========
+        # Imagem do inimigo 
         self.surf = pygame.image.load("assets/images/ff.png").convert_alpha()
         self.surf = pygame.transform.scale(self.surf, (50, 50))
         self.surf = self.add_red_border(self.surf)
         self.rect = self.surf.get_rect(center=(x + 25, y + 25))
         
-        # ========== MOVIMENTO ==========
+        # Movimentacao do inimigo 
         self.speed_x = random.choice([-3, -2, 2, 3])
         self.speed_y = random.choice([-2, -1, 1, 2])
         self.change_direction_timer = 0
         self.change_direction_delay = random.randint(30, 90)
         
-        # ========== TIRO ==========
+        # Disparo 
         self.shoot_cooldown = 0
         self.shoot_delay = random.randint(60, 120)  # Atira a cada 1-2 segundos
-        self.bullets = []  # Lista de projéteis do inimigo
+        self.bullets = []  
 
-    def add_red_border(self, image):
-        """Adiciona uma borda vermelha ao redor da imagem"""
+    def add_red_border(self, image): # borda vermelha para destacar inimigos
         width, height = image.get_size()
         border_size = 3
         new_width = width + (border_size * 2)
@@ -50,7 +48,6 @@ class Enemy(Entity):
         return bordered_image
 
     def move(self):
-        """Move o inimigo aleatoriamente"""
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
         
@@ -77,9 +74,7 @@ class Enemy(Entity):
             self.speed_y = -abs(self.speed_y)
 
     def shoot(self, target_x, target_y):
-        """Dispara um projétil em direção ao alvo"""
         if self.shoot_cooldown <= 0 and self.is_alive:
-            # Cria um novo projétil vermelho
             bullet = BulletFactory.get_bullet(
                 self.rect.centerx, self.rect.centery, 
                 target_x, target_y, 
@@ -91,14 +86,12 @@ class Enemy(Entity):
         return False
 
     def update_bullets(self):
-        """Atualiza todos os projéteis do inimigo"""
         for bullet in self.bullets[:]:
             bullet.move()
             if not bullet.is_alive:
                 self.bullets.remove(bullet)
 
     def bounce(self, other_enemy):
-        """Ricocheteia quando colide com outro inimigo"""
         # Troca as velocidades
         self.speed_x, other_enemy.speed_x = other_enemy.speed_x, self.speed_x
         self.speed_y, other_enemy.speed_y = other_enemy.speed_y, self.speed_y
@@ -119,20 +112,16 @@ class Enemy(Entity):
             other_enemy.rect.y -= 5
 
     def update(self, player_x=None, player_y=None):
-        """Atualiza timers e tenta atirar no jogador"""
         self.update_invincible()
         self.update_bullets()
         
-        # Atualiza cooldown de tiro
         if self.shoot_cooldown > 0:
             self.shoot_cooldown -= 1
         
-        # Tenta atirar no jogador
         if player_x is not None and player_y is not None:
             self.shoot(player_x, player_y)
     
     def take_damage(self, damage=1):
-        """Recebe dano e retorna True se morreu"""
         if self.invincible_timer <= 0 and self.is_alive:
             self.health -= damage
             self.invincible_timer = self.invincible_duration
@@ -143,7 +132,6 @@ class Enemy(Entity):
         return False
 
     def draw(self, window):
-        """Desenha o inimigo e seus projéteis"""
         if self.is_alive:
             window.blit(self.surf, self.rect)
         

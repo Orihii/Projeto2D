@@ -13,7 +13,7 @@ class Menu:
         self.small_font = pygame.font.SysFont("Impact", 32) 
 
         # Opções do menu
-        self.options = ["START", "QUIT", "WIP"]
+        self.options = ["START", "QUIT"]
         self.selected = 0  # 0 = START, 1 = QUIT, 2 = WIP
 
 
@@ -53,9 +53,9 @@ class Menu:
                             print("Quitting game...")  # Para teste
                             quit()
                             
-                        elif self.selected == 2:  # WIP                           
-                            print("WIP option selected")  # Para teste
-                            return "wip"
+                        # elif self.selected == 2:  # Opcao WIP apenas para testar mais funções do menu (Nao faz nada)                           
+                        #     print("WIP option selected")  # Para teste
+                        #     return "wip"
 
         # Desenha o fundo do menu    
             self.window.fill(BLACK)                

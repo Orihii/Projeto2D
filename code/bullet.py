@@ -11,23 +11,21 @@ class Bullet(Entity):
         self.name = "bullet"
         self.shooter = shooter  # "player" ou "enemy"
         
-        # ========== VISUAL ==========
+        # Configurações do projétil 
         self.surf = pygame.Surface((8, 8))
         self.surf.fill(color)
         self.rect = self.surf.get_rect(center=(x, y))
-        
-        # ========== MOVIMENTO ==========
+         
         # Calcula direção do tiro
         dx = target_x - x
         dy = target_y - y
         distance = max(1, (dx**2 + dy**2)**0.5)
         
         # Velocidade constante
-        self.speed = 6 if shooter == "enemy" else 8
+        self.speed = 4 if shooter == "enemy" else 9
         self.vel_x = (dx / distance) * self.speed
         self.vel_y = (dy / distance) * self.speed
-        
-        # ========== VIDA ==========
+         
         self.health = 1
         self.max_health = 1
         self.is_alive = True
@@ -37,7 +35,6 @@ class Bullet(Entity):
         self.max_life = 180 if shooter == "enemy" else 300
 
     def move(self):
-        """Move o projétil na direção calculada"""
         self.rect.x += self.vel_x
         self.rect.y += self.vel_y
         
@@ -50,16 +47,15 @@ class Bullet(Entity):
             self.life_timer >= self.max_life):
             self.is_alive = False
 
-    def draw(self, window):
-        """Desenha o projétil"""
+    def draw(self, window): # Projetil 
         if self.is_alive:
             if self.shooter == "player":
-                # Efeito de brilho amarelo
+                # Amarelo
                 pygame.draw.circle(window, (255, 255, 0), self.rect.center, 6)
                 pygame.draw.circle(window, (255, 200, 0), self.rect.center, 4)
                 pygame.draw.circle(window, (255, 100, 0), self.rect.center, 2)
             else:
-                # Efeito de brilho vermelho para inimigos
+                # Vermelho 
                 pygame.draw.circle(window, (255, 0, 0), self.rect.center, 6)
                 pygame.draw.circle(window, (200, 0, 0), self.rect.center, 4)
                 pygame.draw.circle(window, (150, 0, 0), self.rect.center, 2)

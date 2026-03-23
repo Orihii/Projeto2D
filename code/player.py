@@ -11,29 +11,28 @@ class Player(Entity):
         super().__init__()
         self.name = "player"
         
-        # ========== VIDA ==========
+        # Vidas do jogador 
         self.health = 3
         self.max_health = 3
         self.is_alive = True
         self.invincible_timer = 0
         self.invincible_duration = 60
         
-        # ========== VISUAL ==========
+        # Imagem do jogador 
         self.surf = pygame.image.load("assets/images/ff.png").convert_alpha()
         self.surf = pygame.transform.scale(self.surf, (50, 50))
         self.rect = self.surf.get_rect(center=(x + 15, y + 15))
         self.speed = 6
         
-        # ========== EFEITOS ==========
+        # Efeito de piscar quando invencível 
         self.blink_timer = 0
         
-        # ========== TIRO ==========
+        # Tiros do jogador 
         self.shoot_cooldown = 0
         self.shoot_delay = 15
         self.bullets = []
 
     def move(self):
-        """Move o jogador com as teclas"""
         keys = pygame.key.get_pressed()
         
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -55,7 +54,6 @@ class Player(Entity):
             self.rect.bottom = WIN_HEIGHT
 
     def shoot(self, mouse_x, mouse_y):
-        """Dispara um projétil em direção ao mouse"""
         if self.shoot_cooldown <= 0 and self.is_alive:
             bullet = BulletFactory.get_bullet(
                 self.rect.centerx, self.rect.centery, 
@@ -68,19 +66,16 @@ class Player(Entity):
         return False
 
     def update_bullets(self):
-        """Atualiza todos os projéteis do jogador"""
         for bullet in self.bullets[:]:
             bullet.move()
             if not bullet.is_alive:
                 self.bullets.remove(bullet)
 
     def take_damage(self, damage=1):
-        """Recebe dano com efeito visual"""
         if self.invincible_timer <= 0 and self.is_alive:
             self.health -= damage
             self.invincible_timer = self.invincible_duration
             self.blink_timer = self.invincible_duration
-            print(f"💥 Player took damage! Health: {self.health}")
             
             if self.health <= 0:
                 self.is_alive = False
@@ -88,7 +83,6 @@ class Player(Entity):
         return False
 
     def update(self):
-        """Atualiza timers do jogador"""
         self.update_invincible()
         if self.blink_timer > 0:
             self.blink_timer -= 1
@@ -97,11 +91,9 @@ class Player(Entity):
         self.update_bullets()
 
     def should_blink(self):
-        """Verifica se deve piscar"""
         return self.blink_timer > 0 and (self.blink_timer // 5) % 2 == 0
 
     def draw(self, window):
-        """Desenha o jogador com efeito de piscar"""
         if not self.is_alive:
             return
             
