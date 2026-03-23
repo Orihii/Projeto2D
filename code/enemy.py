@@ -5,6 +5,7 @@ import pygame
 import random
 from code.entity import Entity
 from code.Const import WIN_WIDTH, WIN_HEIGHT
+from code.bulletFactory import BulletFactory
 
 class Enemy(Entity):
     def __init__(self, x, y):
@@ -29,6 +30,11 @@ class Enemy(Entity):
         self.speed_y = random.choice([-2, -1, 1, 2])
         self.change_direction_timer = 0
         self.change_direction_delay = random.randint(30, 90)
+        
+        # ========== TIRO ==========
+        self.shoot_cooldown = 0
+        self.shoot_delay = random.randint(60, 120)  # Atira a cada 1-2 segundos
+        self.bullets = []  # Lista de projéteis do inimigo
 
     def add_red_border(self, image):
         """Adiciona uma borda vermelha ao redor da imagem"""
@@ -70,6 +76,27 @@ class Enemy(Entity):
             self.rect.bottom = WIN_HEIGHT
             self.speed_y = -abs(self.speed_y)
 
+    def shoot(self, target_x, target_y):
+        """Dispara um projétil em direção ao alvo"""
+        if self.shoot_cooldown <= 0 and self.is_alive:
+            # Cria um novo projétil vermelho
+            bullet = BulletFactory.get_bullet(
+                self.rect.centerx, self.rect.centery, 
+                target_x, target_y, 
+                (255, 0, 0), "enemy"
+            )
+            self.bullets.append(bullet)
+            self.shoot_cooldown = self.shoot_delay
+            return True
+        return False
+
+    def update_bullets(self):
+        """Atualiza todos os projéteis do inimigo"""
+        for bullet in self.bullets[:]:
+            bullet.move()
+            if not bullet.is_alive:
+                self.bullets.remove(bullet)
+
     def bounce(self, other_enemy):
         """Ricocheteia quando colide com outro inimigo"""
         # Troca as velocidades
@@ -91,9 +118,18 @@ class Enemy(Entity):
             self.rect.y += 5
             other_enemy.rect.y -= 5
 
-    def update(self):
-        """Atualiza timers do inimigo"""
+    def update(self, player_x=None, player_y=None):
+        """Atualiza timers e tenta atirar no jogador"""
         self.update_invincible()
+        self.update_bullets()
+        
+        # Atualiza cooldown de tiro
+        if self.shoot_cooldown > 0:
+            self.shoot_cooldown -= 1
+        
+        # Tenta atirar no jogador
+        if player_x is not None and player_y is not None:
+            self.shoot(player_x, player_y)
     
     def take_damage(self, damage=1):
         """Recebe dano e retorna True se morreu"""
@@ -107,6 +143,10 @@ class Enemy(Entity):
         return False
 
     def draw(self, window):
-        """Desenha o inimigo"""
+        """Desenha o inimigo e seus projéteis"""
         if self.is_alive:
             window.blit(self.surf, self.rect)
+        
+        # Desenha os projéteis
+        for bullet in self.bullets:
+            bullet.draw(window)

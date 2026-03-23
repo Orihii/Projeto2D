@@ -22,11 +22,9 @@ class Level:
             enemy = EntityFactory.get_entity("enemy", (x, y))
             self.enemies.append(enemy)
         
-        # Fontes
+        self.score = 0
         self.font = pygame.font.Font(None, 36)
         self.big_font = pygame.font.Font(None, 72)
-        
-        # Game Over
         self.game_over = False
         self.game_over_timer = 0
 
@@ -45,6 +43,11 @@ class Level:
                         running = False
                     if self.game_over and event.key == pygame.K_r:
                         running = False
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1 and not self.game_over and self.player.is_alive:
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        self.player.shoot(mouse_x, mouse_y)
             
             if not self.game_over and self.player.is_alive:
                 # ========== ATUALIZA ==========
@@ -53,18 +56,44 @@ class Level:
                 
                 for enemy in self.enemies:
                     enemy.move()
-                    enemy.update()
+                    # Passa a posição do player para o inimigo atirar
+                    enemy.update(self.player.rect.centerx, self.player.rect.centery)
+                
+                # ========== COLISÃO TIROS DO PLAYER x INIMIGOS ==========
+                for bullet in self.player.bullets[:]:
+                    for enemy in self.enemies[:]:
+                        if bullet.check_collision(enemy):
+                            enemy_died = enemy.take_damage(1)
+                            bullet.is_alive = False
+                            
+                            if enemy_died:
+                                self.enemies.remove(enemy)
+                                self.score += 10
+                                
+                                x = random.randint(50, WIN_WIDTH - 50)
+                                y = random.randint(50, WIN_HEIGHT - 150)
+                                new_enemy = EntityFactory.get_entity("enemy", (x, y))
+                                self.enemies.append(new_enemy)
+                            break
+                
+                # ========== COLISÃO TIROS DOS INIMIGOS x PLAYER ==========
+                for enemy in self.enemies:
+                    for bullet in enemy.bullets[:]:
+                        if bullet.check_collision(self.player):
+                            player_died = self.player.take_damage(1)
+                            bullet.is_alive = False
+                            
+                            if player_died:
+                                self.game_over = True
+                                self.game_over_timer = 120
+                            break
                 
                 # ========== COLISÃO PLAYER x INIMIGOS ==========
                 for enemy in self.enemies[:]:
                     if self.player.check_collision(enemy):
-                        # Player toma dano
                         player_died = self.player.take_damage(1)
-                        
-                        # Inimigo morre
                         self.enemies.remove(enemy)
                         
-                        # Cria novo inimigo
                         x = random.randint(50, WIN_WIDTH - 50)
                         y = random.randint(50, WIN_HEIGHT - 150)
                         new_enemy = EntityFactory.get_entity("enemy", (x, y))
@@ -73,7 +102,6 @@ class Level:
                         if player_died:
                             self.game_over = True
                             self.game_over_timer = 120
-                            print("💀 GAME OVER!")
                         break
                 
                 # ========== COLISÃO ENTRE INIMIGOS ==========
@@ -93,10 +121,18 @@ class Level:
             # ========== INTERFACE ==========
             self.draw_hearts()
             
+            score_text = self.font.render(f"Score: {self.score}", True, WHITE)
+            self.window.blit(score_text, (10, 10))
+            
             enemies_text = self.font.render(f"Enemies: {len(self.enemies)}", True, WHITE)
-            self.window.blit(enemies_text, (10, 10))
+            self.window.blit(enemies_text, (10, 50))
             
+            controls_text = self.font.render("Mouse: Aim & Shoot | Arrow Keys: Move", True, WHITE)
+            self.window.blit(controls_text, (10, WIN_HEIGHT - 30))
             
+            if self.player.is_invincible() and not self.game_over:
+                inv_text = self.font.render("INVINCIBLE", True, YELLOW)
+                self.window.blit(inv_text, (WIN_WIDTH // 2 - inv_text.get_width() // 2, 20))
             
             # ========== GAME OVER ==========
             if self.game_over:
@@ -108,8 +144,11 @@ class Level:
                 game_over_text = self.big_font.render("GAME OVER", True, RED)
                 self.window.blit(game_over_text, (WIN_WIDTH // 2 - game_over_text.get_width() // 2, WIN_HEIGHT // 2 - 60))
                 
+                final_score_text = self.font.render(f"Final Score: {self.score}", True, WHITE)
+                self.window.blit(final_score_text, (WIN_WIDTH // 2 - final_score_text.get_width() // 2, WIN_HEIGHT // 2))
                 
-                
+                restart_text = self.font.render("Press R to return to menu", True, WHITE)
+                self.window.blit(restart_text, (WIN_WIDTH // 2 - restart_text.get_width() // 2, WIN_HEIGHT // 2 + 40))
                 
                 self.game_over_timer -= 1
                 if self.game_over_timer <= 0:
