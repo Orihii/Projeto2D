@@ -12,6 +12,7 @@ class Level:
         
         # Player
         self.player = EntityFactory.get_entity("player")
+        self.enemy = EntityFactory.get_entity("enemy")
 
     def run(self):
         running = True 
@@ -28,10 +29,12 @@ class Level:
             
             # Move o jogador
             self.player.move()
+            self.enemy.move()
             
             
             self.window.fill(BLACK)
             self.player.draw(self.window)
+            self.enemy.draw(self.window)
             
             pygame.display.flip()
         
